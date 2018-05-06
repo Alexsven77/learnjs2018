@@ -96,12 +96,15 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn, ...arg) {
+/*function bindFunction(fn, ...arg) {
   return () => {
 return fn.apply(null,arg);
   };
 }
-
+*/
+function bindFunction(fn, ...arg) {
+   return fn.bind(null,...arg);
+  };
 
 export {
     returnFirstArgument,
