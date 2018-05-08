@@ -17,6 +17,18 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
+
+    if (array.constructor !== Array || array.length == 0)
+    throw new Error('empty array');
+
+   if (typeof(fn) != 'function')
+   throw new Error('fn is not a function');
+
+    for(let number of array){
+     if(!fn(number))
+     return false;
+    }
+    return true;
 }
 
 /*
@@ -36,6 +48,17 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
+  if (array.constructor !== Array || array.length == 0)
+    throw new Error('empty array');
+
+   if (typeof(fn) != 'function')
+   throw new Error('fn is not a function');
+
+    for(let number of array){
+     if(fn(number))
+     return true;
+    }
+    return false;
 }
 
 /*
@@ -49,7 +72,22 @@ function isSomeTrue(array, fn) {
  3.3: Необходимо выбрасывать исключение в случаях:
    - fn не является функцией (с текстом "fn is not a function")
  */
-function returnBadArguments(fn) {
+function returnBadArguments(fn, ...other) {
+  let arr = [];
+  if (typeof(fn) != 'function')
+  throw new Error('fn is not a function');
+
+  for(let number of other){
+   try{
+    fn(number);
+   }
+   catch (e){
+    if (e.message != ''){
+      arr.push(number);
+    }
+   }
+  }
+  return arr;
 }
 
 /*
@@ -69,7 +107,39 @@ function returnBadArguments(fn) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(number = 0) {
+  if (!isFinite(number))
+  throw new Error ('number is not a number');
+
+  return {
+    sum: (...rest) =>{
+      for(let n of rest){
+        number += n;
+      }
+      return number;
+    }, 
+    dif: (...rest) =>{
+      for(let n of rest){
+        number = number - n;
+      }
+      return number;
+    },
+    div: (...rest) =>{
+      for(let n of rest){
+        if (!n)
+        throw new Error('division by 0');
+
+        number = number/n;
+      }
+      return number;
+    },
+    mul: (...rest) =>{
+      for(let n of rest){
+        number = number*n;
+      }
+      return number;
+    }
+  }
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
