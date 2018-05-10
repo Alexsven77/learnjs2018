@@ -112,23 +112,24 @@ function calculator(number = 0) {
   throw new Error ('number is not a number');
 
   return {
-    sum: (...rest) =>{
+    /*sum: (...rest) =>{
       for(let n of rest){
         number += n;
       }
       return number;
-    }, 
-    dif: (...rest) =>{
-      for(let n of rest){
-        number = number - n;
-      }
-      return number;
+    }, */
+    sum: (...rest) =>{
+     return number + rest.reduce( (prev, curr)=> {return prev + curr}, )
     },
+
+    dif: (...rest) =>{
+     return number - rest.reduce( (prev, curr)=> {return prev + curr}, )  
+    },
+
     div: (...rest) =>{
       for(let n of rest){
         if (!n)
         throw new Error('division by 0');
-
         number = number/n;
       }
       return number;
