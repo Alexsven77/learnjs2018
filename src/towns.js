@@ -41,15 +41,30 @@ function loadTowns() {
   return new Promise((resolve, reject) => {
 
     let req = new XMLHttpRequest();
-    req.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json', true);
+    req.open('GET', 'https://raw.githubuserconten.com/smelukov/citiesTest/master/cities.json', true);
     req.timeout = 0;
     
     req.onload = ()=> {
+      if(req.status == 200){
       arr = JSON.parse(req.response);
       arr.sort((a, b) => a.name.localeCompare(b.name));
       loadingBlock.style.display = 'none';
       filterBlock.style.display = 'block';
       resolve(arr);
+      }
+      else {
+        loadingBlock.style.display = 'none';
+        errDiv.innerHTML = "<p>Не удалось загрузить города</p><button id ='but'>Повторить</button>";
+        homeworkContainer.appendChild(errDiv);
+        const but = homeworkContainer.querySelector('#but');
+
+        but.addEventListener('click', function(evt){
+        homeworkContainer.removeChild(errDiv);
+        loadingBlock.style.display = 'block';
+        reject(req.status)
+        loadTowns();
+        });
+      }
      };
      
      req.onerror = ()=> {
@@ -61,6 +76,7 @@ function loadTowns() {
       but.addEventListener('click', function(evt){
       homeworkContainer.removeChild(errDiv);
       loadingBlock.style.display = 'block';
+      reject(req.status)
       loadTowns();
       });
       
