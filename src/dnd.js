@@ -27,6 +27,28 @@ const homeworkContainer = document.querySelector('#homework-container');
    homeworkContainer.appendChild(newDiv);
  */
 function createDiv() {
+  const element = document.createElement('div');
+  const randelem = Math.floor(Math.random() * 100);
+
+  const randcolor = () => {
+          let r=Math.floor(Math.random() * (256));
+          let g=Math.floor(Math.random() * (256));
+          let b=Math.floor(Math.random() * (256));
+          console.log(`${r} ${g} ${b}`)
+         // let a = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+          let a = 'rgb(' + r + ',' + g + ',' + b + ')';
+          console.log(a);
+          return a;
+        
+      }
+      element.style.width = randelem+'px';
+      element.style.height = randelem+'px';
+      element.style.backgroundColor = randcolor();
+      element.style.left = randelem+'px';
+      element.style.top = randelem+'px'
+      element.className = 'draggable-div';
+
+      return element;
 }
 
 /*
@@ -38,6 +60,32 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
+    target.onmousedown = (e) => {
+      target.style.position = 'absolute';
+      moveAt(e);
+      // переместим в body, чтобы div был точно не внутри position:relative
+      document.body.appendChild(target);
+
+      target.style.zIndex = 0; // показывать div над другими элементами
+
+      // передвинуть div под координаты курсора
+      // и сдвинуть на половину ширины/высоты для центрирования
+      function moveAt(e) {
+      target.style.left = e.pageX - target.offsetWidth / 2 + 'px';
+      target.style.top = e.pageY - target.offsetHeight / 2 + 'px';
+    }
+
+      // 3, перемещать по экрану
+      document.onmousemove = function(e) {
+      moveAt(e);
+    }
+
+    // 4. отследить окончание переноса
+    target.onmouseup = function() {
+      document.onmousemove = null;
+      target.onmouseup = null;
+    }
+  }
 }
 
 let addDivButton = homeworkContainer.querySelector('#addDiv');
