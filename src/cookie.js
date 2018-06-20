@@ -85,8 +85,7 @@ filterNameInput.addEventListener('keyup', function() {
         newTr.innerHTML = `<td>${cookName}</td><td>${cookValue}</td><td><button id = "bt${cookName}">удалить</button></td>`;
         listTable.appendChild(newTr);
       }
-      else
-      if(isMatching(cookValue, currentFilterWord)){
+      else if(isMatching(cookValue, currentFilterWord)){
         const newTr = document.createElement("tr");
         newTr.setAttribute("id", "tr"+cookName);
         newTr.innerHTML = `<td>${cookName}</td><td>${cookValue}</td><td><button id = "bt${cookName}">удалить</button></td>`;
@@ -100,15 +99,15 @@ filterNameInput.addEventListener('keyup', function() {
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
-  let ch = false;
+  let findCookName = false;
   if(document.cookie.split("; ").length > 1){
    document.cookie.split("; ").forEach((cooka)=>{
     const [cookName, cookValue] = cooka.split('=');
     if(cookName == addNameInput.value)
-    ch = true; 
+    findCookName = true; 
     });
    };
-  if(ch){
+  if(findCookName){
       if(!filterNameInput.value){
           const oldTr = document.getElementById("tr"+addNameInput.value);
           document.cookie = `${addNameInput.value}=${addValueInput.value}`;
@@ -124,9 +123,8 @@ addButton.addEventListener('click', () => {
       listTable.removeChild(oldTr);
       document.cookie = `${addNameInput.value}=${addValueInput.value}`;
       }
-
-  }else
-  { 
+  } 
+  else{ 
     if(filterNameInput.value === ""){
       const newTr = document.createElement("tr");
       newTr.setAttribute("id", "tr"+addNameInput.value);
