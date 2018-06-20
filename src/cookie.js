@@ -47,7 +47,7 @@ function showCookies(){
   //если фильтр пуст то показываем все куки
  if(!listTable.children.length){
 
-  if(document.cookie.split("; ").length > 1){
+  if(document.cookie !==""){
     document.cookie.split("; ").forEach((cooka)=>{
       const [cookName, cookValue] = cooka.split('='), newTr = document.createElement("tr");
       newTr.setAttribute("id", "tr" + cookName);
@@ -99,7 +99,7 @@ filterNameInput.addEventListener('keyup', function() {
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
   let findCookName = false;
-  if(document.cookie.split("; ").length > 1){
+  if(document.cookie !==""){
    document.cookie.split("; ").forEach((cooka)=>{
     const [cookName, cookValue] = cooka.split('=');
     if(cookName == addNameInput.value)
@@ -107,7 +107,8 @@ addButton.addEventListener('click', () => {
     });
    };
   if(findCookName){
-      if(!filterNameInput.value){
+    
+      if(filterNameInput.value === ""){
           const oldTr = document.getElementById("tr"+addNameInput.value);
           document.cookie = `${addNameInput.value}=${addValueInput.value}`;
           oldTr.firstElementChild.nextSibling.innerText = addValueInput.value;
@@ -153,5 +154,7 @@ addButton.addEventListener('click', () => {
     else
     document.cookie = `${addNameInput.value}=${addValueInput.value}`;
   };
+  addNameInput.innerText= "";
+  addValueInput.innerText = "";
 });
 showCookies();
