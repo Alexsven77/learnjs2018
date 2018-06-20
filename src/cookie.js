@@ -74,7 +74,6 @@ filterNameInput.addEventListener('keyup', function() {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
   listTable.innerHTML = "";
   const currentFilterWord = filterNameInput.value;
-  var isMtch = false;
   
   if (currentFilterWord.length !== 0) {
     document.cookie.split("; ").forEach((cooka) => {
