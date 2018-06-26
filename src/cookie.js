@@ -98,63 +98,65 @@ filterNameInput.addEventListener('keyup', function() {
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
-  let findCookName = false;
-  if(document.cookie !==""){
-   document.cookie.split("; ").forEach((cooka)=>{
-    const [cookName, cookValue] = cooka.split('=');
-    if(cookName == addNameInput.value)
-    findCookName = true; 
-    });
-   };
-  if(findCookName){
-    
-      if(filterNameInput.value === ""){
+  if(addNameInput.value !=="" && addValueInput.value !== ""){
+    let findCookName = false;
+    if(document.cookie !==""){
+    document.cookie.split("; ").forEach((cooka)=>{
+      const [cookName, cookValue] = cooka.split('=');
+      if(cookName == addNameInput.value)
+      findCookName = true; 
+      });
+    };
+    if(findCookName){
+      
+        if(filterNameInput.value === ""){
+            const oldTr = document.getElementById("tr"+addNameInput.value);
+            document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+            oldTr.firstElementChild.nextSibling.innerText = addValueInput.value;
+          }
+        else if(isMatching(addValueInput.value, filterNameInput.value)){
           const oldTr = document.getElementById("tr"+addNameInput.value);
           document.cookie = `${addNameInput.value}=${addValueInput.value}`;
           oldTr.firstElementChild.nextSibling.innerText = addValueInput.value;
         }
-      else if(isMatching(addValueInput.value, filterNameInput.value)){
+        else{
         const oldTr = document.getElementById("tr"+addNameInput.value);
+        listTable.removeChild(oldTr);
         document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-        oldTr.firstElementChild.nextSibling.innerText = addValueInput.value;
-      }
-      else{
-      const oldTr = document.getElementById("tr"+addNameInput.value);
-      listTable.removeChild(oldTr);
+        }
+    } 
+    else{ 
+      if(filterNameInput.value === ""){
+        const newTr = document.createElement("tr");
+        newTr.setAttribute("id", "tr"+addNameInput.value);
+        newTr.innerHTML = `<td>${addNameInput.value}</td><td>${addValueInput.value}</td><td><button id = "bt${addNameInput.value}">удалить</button></td>`
+        listTable.appendChild(newTr);
+
+        const delbut = document.getElementById("bt"+addNameInput.value);
+        delbut.addEventListener('click', () => {
+        document.cookie = `${delbut.parentElement.previousElementSibling.previousElementSibling.textContent}='DelCookie';expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+        listTable.removeChild(newTr);
+        });
       document.cookie = `${addNameInput.value}=${addValueInput.value}`;
       }
-  } 
-  else{ 
-    if(filterNameInput.value === ""){
-      const newTr = document.createElement("tr");
-      newTr.setAttribute("id", "tr"+addNameInput.value);
-      newTr.innerHTML = `<td>${addNameInput.value}</td><td>${addValueInput.value}</td><td><button id = "bt${addNameInput.value}">удалить</button></td>`
-      listTable.appendChild(newTr);
+      else if(isMatching(addNameInput.value, filterNameInput.value) || isMatching(addValueInput.value, filterNameInput.value)){
+        const newTr = document.createElement("tr");
+        newTr.setAttribute("id", "tr"+addNameInput.value);
+        newTr.innerHTML = `<td>${addNameInput.value}</td><td>${addValueInput.value}</td><td><button id = "bt${addNameInput.value}">удалить</button></td>`
+        listTable.appendChild(newTr);
 
-      const delbut = document.getElementById("bt"+addNameInput.value);
-      delbut.addEventListener('click', () => {
-      document.cookie = `${delbut.parentElement.previousElementSibling.previousElementSibling.textContent}='DelCookie';expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-      listTable.removeChild(newTr);
-      });
-    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-    }
-    else if(isMatching(addNameInput.value, filterNameInput.value) || isMatching(addValueInput.value, filterNameInput.value)){
-      const newTr = document.createElement("tr");
-      newTr.setAttribute("id", "tr"+addNameInput.value);
-      newTr.innerHTML = `<td>${addNameInput.value}</td><td>${addValueInput.value}</td><td><button id = "bt${addNameInput.value}">удалить</button></td>`
-      listTable.appendChild(newTr);
-
-      const delbut = document.getElementById("bt"+addNameInput.value);
-      delbut.addEventListener('click', () => {
-      document.cookie = `${delbut.parentElement.previousElementSibling.previousElementSibling.textContent}='DelCookie';expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-      listTable.removeChild(newTr);
-      });
+        const delbut = document.getElementById("bt"+addNameInput.value);
+        delbut.addEventListener('click', () => {
+        document.cookie = `${delbut.parentElement.previousElementSibling.previousElementSibling.textContent}='DelCookie';expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+        listTable.removeChild(newTr);
+        });
+        document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+      }
+      else
       document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-    }
-    else
-    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-  };
-  addNameInput.innerText= "";
-  addValueInput.innerText = "";
+    };
+    addNameInput.innerText= "";
+    addValueInput.innerText = "";
+  }
 });
 showCookies();
